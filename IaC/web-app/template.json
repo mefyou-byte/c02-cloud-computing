@@ -1,0 +1,212 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serverfarms_ApplicationPlan_name": {
+      "defaultValue": "ApplicationPlan",
+      "type": "String"
+    },
+    "sites_meal_db_name": {
+      "defaultValue": "meal-db",
+      "type": "String"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2022-03-01",
+      "kind": "app",
+      "location": "West Europe",
+      "name": "[parameters('serverfarms_ApplicationPlan_name')]",
+      "properties": {
+        "elasticScaleEnabled": false,
+        "hyperV": false,
+        "isSpot": false,
+        "isXenon": false,
+        "maximumElasticWorkerCount": 1,
+        "perSiteScaling": false,
+        "reserved": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0,
+        "zoneRedundant": false
+      },
+      "sku": {
+        "capacity": 0,
+        "family": "F",
+        "name": "F1",
+        "size": "F1",
+        "tier": "Free"
+      },
+      "type": "Microsoft.Web/serverfarms"
+    },
+    {
+      "apiVersion": "2022-03-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ApplicationPlan_name'))]"
+      ],
+      "kind": "app",
+      "location": "West Europe",
+      "name": "[parameters('sites_meal_db_name')]",
+      "properties": {
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "clientCertMode": "Required",
+        "containerSize": 0,
+        "customDomainVerificationId": "4DC0860D40BC12568B1F36EE78A9D29AC017F9020FE77FF78A729E7EBC017026",
+        "dailyMemoryTimeQuota": 0,
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "hostType": "Standard",
+            "name": "[concat(parameters('sites_meal_db_name'), '.azurewebsites.net')]",
+            "sslState": "Disabled"
+          },
+          {
+            "hostType": "Repository",
+            "name": "[concat(parameters('sites_meal_db_name'), '.scm.azurewebsites.net')]",
+            "sslState": "Disabled"
+          }
+        ],
+        "hostNamesDisabled": false,
+        "httpsOnly": false,
+        "hyperV": false,
+        "isXenon": false,
+        "keyVaultReferenceIdentity": "SystemAssigned",
+        "redundancyMode": "None",
+        "reserved": false,
+        "scmSiteAlsoStopped": false,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ApplicationPlan_name'))]",
+        "siteConfig": {
+          "acrUseManagedIdentityCreds": false,
+          "alwaysOn": false,
+          "functionAppScaleLimit": 0,
+          "http20Enabled": true,
+          "minimumElasticInstanceCount": 0,
+          "numberOfWorkers": 1
+        },
+        "storageAccountRequired": false,
+        "vnetContentShareEnabled": false,
+        "vnetImagePullEnabled": false,
+        "vnetRouteAllEnabled": false
+      },
+      "type": "Microsoft.Web/sites"
+    },
+    {
+      "apiVersion": "2022-03-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_meal_db_name'))]"
+      ],
+      "location": "West Europe",
+      "name": "[concat(parameters('sites_meal_db_name'), '/ftp')]",
+      "properties": {
+        "allow": true
+      },
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies"
+    },
+    {
+      "apiVersion": "2022-03-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_meal_db_name'))]"
+      ],
+      "location": "West Europe",
+      "name": "[concat(parameters('sites_meal_db_name'), '/scm')]",
+      "properties": {
+        "allow": true
+      },
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies"
+    },
+    {
+      "apiVersion": "2022-03-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_meal_db_name'))]"
+      ],
+      "location": "West Europe",
+      "name": "[concat(parameters('sites_meal_db_name'), '/web')]",
+      "properties": {
+        "acrUseManagedIdentityCreds": false,
+        "alwaysOn": false,
+        "autoHealEnabled": false,
+        "azureStorageAccounts": {},
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "detailedErrorLoggingEnabled": false,
+        "experiments": {
+          "rampUpRules": []
+        },
+        "ftpsState": "AllAllowed",
+        "functionsRuntimeScaleMonitoringEnabled": false,
+        "http20Enabled": true,
+        "httpLoggingEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "action": "Allow",
+            "description": "Allow all access",
+            "ipAddress": "Any",
+            "name": "Allow all",
+            "priority": 2147483647
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "localMySqlEnabled": false,
+        "logsDirectorySizeLimit": 35,
+        "managedPipelineMode": "Integrated",
+        "minTlsVersion": "1.2",
+        "minimumElasticInstanceCount": 0,
+        "netFrameworkVersion": "v6.0",
+        "numberOfWorkers": 1,
+        "phpVersion": "5.6",
+        "preWarmedInstanceCount": 0,
+        "publishingUsername": "$meal-db",
+        "remoteDebuggingEnabled": false,
+        "remoteDebuggingVersion": "VS2019",
+        "requestTracingEnabled": false,
+        "scmIpSecurityRestrictions": [
+          {
+            "action": "Allow",
+            "description": "Allow all access",
+            "ipAddress": "Any",
+            "name": "Allow all",
+            "priority": 2147483647
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "scmMinTlsVersion": "1.2",
+        "scmType": "LocalGit",
+        "use32BitWorkerProcess": true,
+        "virtualApplications": [
+          {
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": false,
+            "virtualPath": "/"
+          }
+        ],
+        "vnetPrivatePortsCount": 0,
+        "vnetRouteAllEnabled": false,
+        "webSocketsEnabled": false
+      },
+      "type": "Microsoft.Web/sites/config"
+    },
+    {
+      "apiVersion": "2022-03-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_meal_db_name'))]"
+      ],
+      "location": "West Europe",
+      "name": "[concat(parameters('sites_meal_db_name'), '/', parameters('sites_meal_db_name'), '.azurewebsites.net')]",
+      "properties": {
+        "hostNameType": "Verified",
+        "siteName": "meal-db"
+      },
+      "type": "Microsoft.Web/sites/hostNameBindings"
+    }
+  ],
+  "variables": {}
+}

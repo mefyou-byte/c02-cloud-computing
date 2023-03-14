@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serverfarms_ApplicationPlan_name": {
+      "defaultValue": "ApplicationPlan",
+      "type": "String"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2022-03-01",
+      "kind": "app",
+      "location": "West Europe",
+      "name": "[parameters('serverfarms_ApplicationPlan_name')]",
+      "properties": {
+        "elasticScaleEnabled": false,
+        "hyperV": false,
+        "isSpot": false,
+        "isXenon": false,
+        "maximumElasticWorkerCount": 1,
+        "perSiteScaling": false,
+        "reserved": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0,
+        "zoneRedundant": false
+      },
+      "sku": {
+        "capacity": 0,
+        "family": "F",
+        "name": "F1",
+        "size": "F1",
+        "tier": "Free"
+      },
+      "type": "Microsoft.Web/serverfarms"
+    }
+  ],
+  "variables": {}
+}
