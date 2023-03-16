@@ -57,3 +57,43 @@ Für die Überprüfung der Verfügbarkeit und Lasteffizienz stehen verschiedene 
 - Analyse der HTTP 4xx Fehler
 - Health-Checks
 - u.v.m.
+
+
+# Logging
+
+Azure App Services erlauben klassische Logs auf unterschiedlichen Ebenen eines App Services mitzuschreiben: 
+
+  * Application log
+    * file system des app service
+    * Azure storage blob
+  * Web server logging (nur Windows als Plattform)
+  * detailed error messages (nur Windows als Plattform)
+  * failed request tracinga (nur Windows als Plattform)
+  * Deployment logging
+
+
+Zu finden sind diese Einstellungen im Bereich Monitoring - App Service Logs. 
+Zu jedem Log kann das Loglevel, also wie detailliert die Logs aufgezeichnet werden, eingestellt werden:
+
+  * disabled
+  * error
+  * warning
+  * information
+  * verbose
+
+![Logging Settings](.doc/images/logging/log-settings.jpg)
+
+Unter _Log stream_ kann man im azure Portal die Application logs oder die Web Service logs in einer Konsole mitlesen. Alternativ können die Logs auch in der Cloud Shell mit dem folgenden Kommando verfolgen:
+
+```CloudShell
+az webapp log tail --name appname --resource-group myResourceGroup
+```
+
+![web-service-log](.doc/images/logging/webserver-log.jpg)
+
+## Weitere Möglichkeiten 
+
+Auch in den Diagnostics können Einstellungen getroffen werden, um diverse Logs anzuzeigen. 
+Azure Monitor ist ein eigenes Azure service, das logs von unterschiedlichen Azure und on premise Ressourcen sammeln und aggregieren kann. 
+
+Eine detaillierte Beschreibung findet sich in der [Microsoft Doku](https://learn.microsoft.com/en-us/azure/app-service/troubleshoot-diagnostic-logs).
