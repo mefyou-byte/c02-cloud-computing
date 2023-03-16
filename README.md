@@ -81,7 +81,7 @@ Zu jedem Log kann das Loglevel, also wie detailliert die Logs aufgezeichnet werd
   * information
   * verbose
 
-![Logging-Settings](.doc/images/logging/log-settings.jpg)
+![alt Logging-Settings](.doc/images/logging/log-settings.jpg)
 
 Unter _Log stream_ kann man im azure Portal die Application logs oder die Web Service logs in einer Konsole mitlesen. Alternativ können die Logs auch in der Cloud Shell mit dem folgenden Kommando verfolgen:
 
@@ -89,7 +89,7 @@ Unter _Log stream_ kann man im azure Portal die Application logs oder die Web Se
 az webapp log tail --name appname --resource-group myResourceGroup
 ```
 
-![web-service-log](.doc/images/logging/webserver-log.jpg)
+![alt web-service-log](.doc/images/logging/webserver-log.jpg)
 
 ## Weitere Möglichkeiten 
 
